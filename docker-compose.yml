@@ -1,0 +1,46 @@
+version: "3.8"
+
+services:
+  app:
+    build: .
+    image: viz-agent:local
+    container_name: viz-agent-app
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      - MOCK_OPENAI=true
+      - MOCK_SPEC_GENERATOR=true
+      - PROMETHEUS_ENABLED=true
+      - LOG_AS_JSON=true
+      - LOG_LEVEL=INFO
+    volumes:
+      - ./:/app:cached
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: viz-agent-prometheus
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    ports:
+      - "9090:9090"
+    restart: unless-stopped
+
+  grafana:
+    image: grafana/grafana:9.5.0
+    container_name: viz-agent-grafana
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_INSTALL_PLUGINS=grafana-piechart-panel
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./grafana/dashboards:/var/lib/grafana/dashboards:ro
+    depends_on:
+      - prometheus

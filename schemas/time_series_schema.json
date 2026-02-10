@@ -1,0 +1,47 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Canonical Time Series Table",
+  "type": "object",
+  "properties": {
+    "columns": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {"type": "string"},
+          "type": {"type": "string", "enum": ["temporal", "quantitative", "categorical"]}
+        },
+        "required": ["name", "type"]
+      }
+    },
+    "rows": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "date": {"type": ["string","null"], "pattern": "^\\d{4}-\\d{2}-\\d{2}$"},
+          "Open": {"type": ["number","null"]},
+          "High": {"type": ["number","null"]},
+          "Low": {"type": ["number","null"]},
+          "Close": {"type": ["number","null"]},
+          "Adj_Close": {"type": ["number","null"]},
+          "Volume": {"type": ["number","null"]},
+          "value": {"type": ["number","null"]}
+        },
+        "additionalProperties": true
+      }
+    },
+    "metadata": {
+      "type": "object",
+      "properties": {
+        "source": {"type": "string"},
+        "symbol_or_key": {"type": ["string","null"]},
+        "fetched_at": {"type": "string", "format": "date-time"},
+        "url_or_api_endpoint": {"type": ["string","null"]},
+        "http_status": {"type": ["integer","null"]}
+      },
+      "required": ["source","fetched_at"]
+    }
+  },
+  "required": ["columns","rows","metadata"]
+}

@@ -1,0 +1,73 @@
+name: Build & Deploy to Kubernetes
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    outputs:
+      image: ${{ steps.build.outputs.image }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Login to GHCR
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GHCR_PAT }}
+
+      - name: Build and push
+        id: build
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          push: true
+          tags: ghcr.io/${{ github.repository_owner }}/viz-agent:${{ github.sha }}
+
+  deploy:
+    needs: build-and-push
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup kubectl
+        uses: azure/setup-kubectl@v3
+        with:
+          version: '1.28.0'
+
+      - name: Install Helm
+        uses: azure/setup-helm@v3
+        with:
+          version: '3.12.0'
+
+      - name: Decode kubeconfig
+        env:
+          KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
+        run: |
+          echo "$KUBE_CONFIG_DATA" | base64 --decode > kubeconfig
+          export KUBECONFIG=$(pwd)/kubeconfig
+          kubectl config view
+
+      - name: Helm upgrade (install) viz-agent
+        run: |
+          export KUBECONFIG=$(pwd)/kubeconfig
+          helm upgrade --install viz-agent ./chart/viz-agent \
+            --set image.repository=ghcr.io/${{ github.repository_owner }}/viz-agent \
+            --set image.tag=${{ github.sha }} \
+            --namespace viz-agent --create-namespace \
+            --wait --timeout 5m
+
+      - name: Smoke test
+        run: |
+          export KUBECONFIG=$(pwd)/kubeconfig
+          kubectl rollout status deployment/viz-agent-viz-agent --namespace viz-agent --timeout=120s

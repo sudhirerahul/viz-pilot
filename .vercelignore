@@ -1,0 +1,24 @@
+# Tests & dev tooling
+tests/
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Docker & K8s (not needed on Vercel)
+Dockerfile
+docker-compose.yml
+chart/
+k8s/
+grafana/
+prometheus/
+
+# Local artifacts
+viz_agent.db
+*.db
+.env
+
+# Docs & CI
+docs/
+.github/
+README.md

@@ -1,0 +1,49 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Provenance Bundle",
+  "type": "object",
+  "properties": {
+    "request_id": {"type": "string"},
+    "sources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "source": {"type": "string"},
+          "symbol_or_key": {"type": ["string","null"]},
+          "fetched_at": {"type": "string", "format": "date-time"},
+          "url_or_api_endpoint": {"type": ["string","null"]},
+          "http_status": {"type": ["integer","null"]},
+          "raw_sample": {"type": "string"}
+        },
+        "required": ["source","fetched_at"]
+      }
+    },
+    "transforms": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "llm_calls": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "role": {"type": "string"},
+          "model": {"type": "string"},
+          "prompt_hash": {"type": ["string","null"]},
+          "response_id": {"type": ["string","null"]}
+        },
+        "required": ["role","model"]
+      }
+    },
+    "validator": {
+      "type": "object",
+      "properties": {
+        "ok": {"type": "boolean"},
+        "errors": {"type":"array","items":{"type":"string"}}
+      },
+      "required": ["ok","errors"]
+    }
+  },
+  "required": ["request_id","sources","validator"]
+}

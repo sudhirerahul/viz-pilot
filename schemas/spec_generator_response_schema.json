@@ -1,0 +1,21 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Spec Generator Response Schema",
+  "type": "object",
+  "properties": {
+    "vega_lite_spec": { "type": "object" },
+    "explanation": { "type": "string" },
+    "provenance": {
+      "type": "object",
+      "properties": {
+        "connectors_required": { "type": "array", "items": { "type": "string" } },
+        "api_keys_required": { "type": "array", "items": { "type": "string" } },
+        "notes": { "type": "string" }
+      }
+    },
+    "__caption__": { "type": "string" },
+    "__used_fields__": { "type": "array", "items": { "type": "string" } },
+    "__notes__": { "type": "string" }
+  },
+  "required": ["vega_lite_spec", "explanation"]
+}

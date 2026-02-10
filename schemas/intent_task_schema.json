@@ -1,0 +1,60 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Intent Task Schema (MVP)",
+  "type": "object",
+  "properties": {
+    "goal": { "type": "string" },
+    "chart_type": { "type": "string", "enum": ["line", "bar", "scatter", "area", "auto"] },
+    "metrics": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "symbol": { "type": ["string", "null"] },
+    "dataset_key": { "type": ["string", "null"] },
+    "group_by": { "type": ["string", "null"] },
+    "time_range": {
+      "type": "object",
+      "properties": {
+        "start": { "type": ["string", "null"], "pattern": "^\\d{4}-\\d{2}-\\d{2}$" },
+        "end": { "type": ["string", "null"], "pattern": "^\\d{4}-\\d{2}-\\d{2}$" }
+      },
+      "required": ["start", "end"]
+    },
+    "sources": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "filters": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "column": { "type": "string" },
+          "op": { "type": "string" },
+          "value": {}
+        },
+        "required": ["column", "op", "value"]
+      }
+    },
+    "transforms": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "op": { "type": "string" },
+          "field": { "type": "string" },
+          "window": { "type": "integer" }
+        },
+        "required": ["op", "field"]
+      }
+    },
+    "clarify": {
+      "type": ["object", "null"],
+      "properties": {
+        "question": { "type": "string" }
+      },
+      "required": ["question"]
+    }
+  },
+  "required": ["goal", "chart_type", "metrics"]
+}

@@ -1,0 +1,58 @@
+replicaCount: 2
+
+image:
+  repository: ghcr.io/your-org/viz-agent
+  tag: "latest"
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 8000
+  targetPort: 8000
+
+ingress:
+  enabled: true
+  hostname: viz.example.com
+  className: ""
+  tls: true
+
+resources:
+  requests:
+    cpu: "250m"
+    memory: "512Mi"
+  limits:
+    cpu: "1000m"
+    memory: "1Gi"
+
+livenessProbe:
+  path: /health
+  initialDelaySeconds: 30
+  periodSeconds: 15
+  timeoutSeconds: 5
+  failureThreshold: 3
+
+readinessProbe:
+  path: /health
+  initialDelaySeconds: 5
+  periodSeconds: 10
+  timeoutSeconds: 3
+  failureThreshold: 3
+
+env:
+  MOCK_OPENAI: "false"
+  PROMETHEUS_ENABLED: "true"
+  LOG_AS_JSON: "true"
+  LOG_LEVEL: "INFO"
+  ENVIRONMENT: "staging"
+
+autoscaling:
+  enabled: true
+  minReplicas: 2
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 60
+
+persistence: {}
+
+nodeSelector: {}
+tolerations: []
+affinity: {}

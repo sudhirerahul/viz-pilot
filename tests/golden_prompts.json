@@ -1,0 +1,32 @@
+[
+  {
+    "id": "p1",
+    "prompt": "Plot TSLA daily close since 2024-01-01 with 30-day moving average",
+    "expected_type": "task"
+  },
+  {
+    "id": "p2",
+    "prompt": "Show AAPL adjusted close last 12 months as a line chart",
+    "expected_type": "task"
+  },
+  {
+    "id": "p3",
+    "prompt": "Compare AAPL and MSFT daily close for the last 2 years",
+    "expected_type": "task"
+  },
+  {
+    "id": "p4",
+    "prompt": "Plot CPIAUCSL monthly since 2010-01-01",
+    "expected_type": "task"
+  },
+  {
+    "id": "p5",
+    "prompt": "Plot TSLA volume last 6 months as bar chart",
+    "expected_type": "task"
+  },
+  {
+    "id": "p6",
+    "prompt": "Show growth of Apple",
+    "expected_type": "clarify"
+  }
+]

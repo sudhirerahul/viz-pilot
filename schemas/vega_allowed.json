@@ -1,0 +1,13 @@
+{
+  "description": "Allowed Vega-Lite subset for Visualization Agent (Advanced)",
+  "allowed_marks": ["line", "area", "bar", "point", "rect", "rule", "text", "tick", "circle", "square"],
+  "required_top_level": ["$schema", "data"],
+  "encoding_required_fields": ["x", "y"],
+  "x_required": {
+    "type": ["temporal", "ordinal", "nominal"],
+    "field": "date"
+  },
+  "forbidden_keys": ["usermeta", "signals"],
+  "max_preview_rows": 50,
+  "max_render_rows": 5000
+}

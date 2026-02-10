@@ -1,0 +1,14 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "functions": {
+    "api/**/*.py": {
+      "maxDuration": 60,
+      "excludeFiles": "{tests/**,__tests__/**,**/*.test.py,**/test_*.py,.venv/**,.github/**,chart/**,k8s/**,grafana/**,prometheus/**,docs/**,*.db}"
+    }
+  },
+  "rewrites": [
+    { "source": "/api/(.*)", "destination": "/api/index.py" },
+    { "source": "/health", "destination": "/api/index.py" },
+    { "source": "/metrics", "destination": "/api/index.py" }
+  ]
+}
