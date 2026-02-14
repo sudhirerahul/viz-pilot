@@ -2,7 +2,6 @@
 
 **An autonomous visualization agent that transforms plain-English chart requests into auditable, institutional-grade Vega-Lite specifications -- with planning, tool use, self-correction, and full provenance tracking.**
 
-[![Live Demo](https://img.shields.io/badge/Live%20Demo-terminal--x--drab.vercel.app-blue?style=for-the-badge)](https://terminal-x-drab.vercel.app)
 [![Tests](https://img.shields.io/badge/Tests-58%20Passing-brightgreen?style=for-the-badge)]()
 [![Python](https://img.shields.io/badge/Python-3.9%2B-3776AB?style=for-the-badge&logo=python&logoColor=white)]()
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge)]()
